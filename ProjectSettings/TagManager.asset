@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Interactive
+  - LevelHelper
   layers:
   - Default
   - TransparentFX
@@ -13,8 +15,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Player
+  - WorldCollision
   - 
   - 
   - 
@@ -44,8 +46,20 @@ TagManager:
   - name: Background
     uniqueID: 1787313257
     locked: 0
+  - name: Geometry
+    uniqueID: 2614251949
+    locked: 0
+  - name: BGParticles
+    uniqueID: 383494957
+    locked: 0
   - name: Player
     uniqueID: 2143104637
+    locked: 0
+  - name: Monsters
+    uniqueID: 594658367
+    locked: 0
+  - name: FGParticles
+    uniqueID: 1327502791
     locked: 0
   - name: Foreground
     uniqueID: 1644498885

@@ -5,7 +5,7 @@ using UnityEngine;
 public class P2DManager : MonoBehaviour
 {
     public List<P2DSubject> subjects = new List<P2DSubject>();
-    public List<P2DLightSource> lightSources = new List<P2DLightSource>();
+    public List<P2DVisibilityProvider> visibilityProviders = new List<P2DVisibilityProvider>();
 
     public List<P2DSound> soundBuffer = new List<P2DSound>();
 
@@ -18,7 +18,7 @@ public class P2DManager : MonoBehaviour
     void Start()
     {
         subjects = new List<P2DSubject>(FindObjectsOfType<P2DSubject>());
-        lightSources = new List<P2DLightSource>(FindObjectsOfType<P2DLightSource>());
+        visibilityProviders = new List<P2DVisibilityProvider>(FindObjectsOfType<P2DVisibilityProvider>());
     }
 
     public void RegisterSound(P2DSound sound) {
@@ -35,8 +35,10 @@ public class P2DManager : MonoBehaviour
             }
 
             subject.visibility = 0f;
-            foreach (P2DLightSource source in lightSources) {
-                source.UpdateSubjectVisibility(subject);
+            foreach (P2DVisibilityProvider source in visibilityProviders) {
+                if (source.gameObject.activeSelf) {
+                    source.UpdateSubjectVisibility(subject);
+                }
             }
         }
 
