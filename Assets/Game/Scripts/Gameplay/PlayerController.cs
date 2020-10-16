@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public Interactive interactive = null;
     public string interactiveTag = "Interactive";
 
+    public List<Item> heldItems = new List<Item>(); 
+
     public float visibility => p2dSubject.visibility;
 
     // Start is called before the first frame update
@@ -81,6 +83,28 @@ public class PlayerController : MonoBehaviour
 
     void UpdateSprite() {
         sprite.flipX = controller.faceDirection == 1 ? false : true;
+    }
+
+    public bool HasItemWithId(string id) {
+        foreach (Item item in heldItems) {
+            if (item.itemId == id) return true;
+        }
+        return false;
+    }
+
+    public void DisposeItemWithId(string id) {
+        foreach (Item item in heldItems) {
+            if (item.itemId == id) {
+                heldItems.Remove(item);
+                break;
+            }
+        }
+        uiManager.UpdateItemPanel(heldItems);
+    }
+
+    public void GiveItem(Item item) {
+        heldItems.Add(item);
+        uiManager.UpdateItemPanel(heldItems);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
