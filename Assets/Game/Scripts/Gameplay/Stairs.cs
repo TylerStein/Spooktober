@@ -7,11 +7,8 @@ public class Stairs : MonoBehaviour
     public Transform topPoint;
     public Transform bottomPoint;
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        
-    }
-
-    private void OnDrawGizmos() {
-        
+    public Transform GetOppositePoint(Transform point) {
+        if (point == topPoint) return bottomPoint;
+        else return topPoint;
     }
 }

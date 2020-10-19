@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public bool useBounds = false;
+    public Bounds bounds = new Bounds(Vector3.zero, Vector3.one);
+
     public Transform targetTransform;
     public Vector3 targetOffset = new Vector3(0f, 0f, -10f);
 
@@ -33,7 +36,14 @@ public class CameraController : MonoBehaviour
         float y = Mathf.SmoothDamp(transform.position.y, targetPosition.y, ref _yVelocity, yTime, yMaxSpeed, Time.fixedDeltaTime);
         float z = Mathf.SmoothDamp(transform.position.z, targetPosition.z, ref _zVelocity, zTime, zMaxSpeed, Time.fixedDeltaTime);
 
-        transform.position = new Vector3(x, y, z);
+        Vector3 newPosition = new Vector3(x, y, z);
+        if (useBounds) {
+            if (bounds.Contains(newPosition) == false) {
+                newPosition = bounds.ClosestPoint(newPosition);
+            }
+        }
+
+        transform.position = newPosition;
     }
 
     public Vector3 GetTarget() {
@@ -56,5 +66,18 @@ public class CameraController : MonoBehaviour
         _xVelocity = 0f;
         _yVelocity = 0f;
         _zVelocity = 0f;
+    }
+
+    public void OnDrawGizmosSelected() {
+        if (useBounds) {
+            Gizmos.color = Color.yellow;
+            Vector3 bottomRight = bounds.min + (Vector3.right * bounds.size.x);
+            Vector3 topLeft = bounds.min + (Vector3.up * bounds.size.y);
+            Gizmos.DrawLine(bounds.min, bottomRight);
+            Gizmos.DrawLine(bounds.min, topLeft);
+            Gizmos.DrawLine(bottomRight, bounds.max);
+            Gizmos.DrawLine(topLeft, bounds.max);
+
+        }
     }
 }

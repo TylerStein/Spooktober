@@ -9,8 +9,10 @@ public class Nav2D : MonoBehaviour
     public void OnDrawGizmos() {
         Gizmos.color = Color.white;
         foreach (NavNode2D node in nodes) {
+            if (node == null) continue;
             Gizmos.DrawWireSphere(node.transform.position, 0.25f);
             foreach (NavNode2D connectedNode in node.connections) {
+                if (connectedNode == null) continue;
                 Gizmos.DrawLine(node.transform.position, connectedNode.transform.position);
 
                 Vector3 diff = connectedNode.transform.position - node.transform.position;

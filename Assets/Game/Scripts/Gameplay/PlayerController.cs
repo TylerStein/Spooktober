@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController2D))]
+[RequireComponent(typeof(CharacterMovementController2D))]
 public class PlayerController : MonoBehaviour
 {
     public P2DAudioSource p2dAudioSource;
@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform playerLight;
 
-    public CharacterController2D controller;
+    public CharacterMovementController2D controller;
     public SpriteRenderer sprite;
     public UIManager uiManager;
 

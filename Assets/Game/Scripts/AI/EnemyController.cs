@@ -15,7 +15,8 @@ public enum EnemyState
 public class EnemyController : MonoBehaviour
 {
     public PlayerController player;
-    public CharacterController2D characterController;
+    public CharacterMovementController2D characterController;
+    public CharacterNavigationController2D navigationController;
     public EnemyBehaviourSettings behaviourSettings;
     public SpriteRenderer sprite;
     public SimpleNav2DController navController;
@@ -140,51 +141,7 @@ public class EnemyController : MonoBehaviour
     }
 
     private void UpdateState_MoveToTarget() {
-        if (_navSteps.Count == 0) {
-            state = EnemyState.NONE;
-            return;
-        }
-
-        SimpleNav2DStep activeStep = _navSteps.Peek();
-        if (activeStep.climbDownStairs) {
-            if (!characterController.isOnStairs) {
-                // mount stairs
-                characterController.MountStairs(activeStep.targetStairs);
-            } else {
-                // move down stairs
-                int downDirection = characterController.GetStairsUpDirection() * -1;
-                characterController.Move(Vector2.right * downDirection);
-
-                if (characterController.GetStairsDistanceToEnd(downDirection) <= 0f || !characterController.isOnStairs) {
-                    // bottom of stairs
-                    _navSteps.Pop();
-                }
-            }
-        } else if (activeStep.climbUpStairs) {
-            if (!characterController.isOnStairs) {
-                // mount stairs
-                characterController.MountStairs(activeStep.targetStairs);
-            } else {
-                // move up stairs
-                int upDirection = characterController.GetStairsUpDirection();
-                characterController.Move(Vector2.right * upDirection);
-
-                if (characterController.GetStairsDistanceToEnd(upDirection) <= 0f || !characterController.isOnStairs) {
-                    // top of stairs
-                    _navSteps.Pop();
-                }
-            }
-        } else {
-            // move towards this x
-            float difference = activeStep.targetXPosition - transform.position.x;
-            if (Mathf.Abs(difference) > 0.5f) {
-                // move toward target
-                characterController.Move(Vector2.right * Mathf.Sign(difference));
-            } else {
-                // at target
-                _navSteps.Pop();
-            }
-        }
+        
     }
 
     //private void UpdateState_Patrol() {

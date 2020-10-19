@@ -12,7 +12,7 @@ public enum MoveState
     FALLING,
 }
 
-public class CharacterController2D : MonoBehaviour
+public class CharacterMovementController2D : MonoBehaviour
 {
     public Bounds innerBounds = new Bounds(Vector3.zero, Vector3.one);
     public Bounds outerBounds = new Bounds(Vector3.zero, Vector3.one);
@@ -181,6 +181,9 @@ public class CharacterController2D : MonoBehaviour
         } else {
             UpdateNormal(Time.fixedDeltaTime);
         }
+
+        moveInput = Vector2.zero;
+        jumpInput = false;
     }
 
     void UpdateNormal(float deltaTime) {
@@ -207,12 +210,18 @@ public class CharacterController2D : MonoBehaviour
         isGrounded = true;
         isJumping = false;
 
-        Vector2 nearestStairPoint = ClosestPointOnLine(currentStairs.bottomPoint.position, currentStairs.topPoint.position, transform.position);
-        Vector2 topToBottomDir = (currentStairs.topPoint.position - currentStairs.bottomPoint.position).normalized;
+        Vector2 rightDir = Vector2.zero;
+        if (currentStairs.topPoint.position.x > currentStairs.bottomPoint.position.x) {
+            // topPoint is rightmost
+            rightDir = (currentStairs.topPoint.position - currentStairs.bottomPoint.position).normalized;
+        } else {
+            // bottomPoint is rightmost
+            rightDir = (currentStairs.bottomPoint.position - currentStairs.topPoint.position).normalized;
+        }
 
         float xVelocity = SolveXVelocity(velocity.x, Time.fixedDeltaTime);
-
-        Vector2 projectedPosition = nearestStairPoint + (topToBottomDir * xVelocity * Time.fixedDeltaTime);
+        Vector2 nearestStairPoint = ClosestPointOnLine(currentStairs.bottomPoint.position, currentStairs.topPoint.position, transform.position);
+        Vector2 projectedPosition = nearestStairPoint + (rightDir * xVelocity * Time.fixedDeltaTime);
         // stop progress past edges
         if (currentStairs.topPoint.position.x > currentStairs.bottomPoint.position.x) {
             // top is rightmost

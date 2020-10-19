@@ -21,6 +21,10 @@ MonoBehaviour:
   groundAcceleration: 60
   groundBraking: 120
   groundFriction: 80
+  maxStairsVelocityX: 4
+  stairsAcceleration: 60
+  stairsBraking: 120
+  stairsFriction: 100
   maxAirVelocityX: 6
   airAccelerationX: 60
   airBraking: 80
